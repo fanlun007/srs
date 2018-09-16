@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="utf-8">
+<head>
+    <#assign app_path=request.contextPath/>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Title</title>
+    <link href="${s.base}/webjars/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <main role="main" class="col-md-6 m-lg-auto col-lg-8 pt-3 px-4">
+            <h2><#if (editStu)??>编辑<#else>新增</#if></h2>
+            <form id="stuForm" action="/stu" method="post">
+                <#if (editStu)??>
+                    <input type="hidden" name="_method" value="put"/>
+                </#if>
+                <div class="form-group">
+                    <label>学号</label><span id="errTip"></span>
+                    <input type="text" name="sno" class="form-control" <#if (editStu)??> value="${editStu.sno}" readonly</#if>>
+                </div>
+                <div class="form-group">
+                    <label>姓名</label>
+                    <input type="text" name="sn" class="form-control" <#if (editStu)??> value="${editStu.sn}"</#if>>
+                </div>
+                <div class="form-group">
+                    <label>宿舍号</label>
+                    <input type="text" name="dormNum" class="form-control" <#if (editStu)??> value="${editStu.dormNum}"</#if>>
+                </div>
+                <div class="form-group">
+                    <label>电话</label>
+                    <input type="text" name="phone" class="form-control" <#if (editStu)??> value="${editStu.phone}"</#if>>
+                </div>
+                <#if (editStu)??>
+                    <button class="btn btn-md btn-primary" type="submit">修改</button>
+                <#else>
+                    <a href="javascript:void(0)">
+                        <div onclick="doCheckOrAdd();" class="btn btn-md btn-primary">添加</div>
+                    </a>
+                </#if>
+            </form>
+        </main>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="webjars/jquery/3.3.1/jquery.js"></script>
+<script type="text/javascript" src="webjars/jquery-form/3.51/jquery.form.js"></script>
+<script type="text/javascript" src="webjars/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    function doCheckOrAdd() {
+        $('#stuForm').ajaxSubmit({
+            dataType: 'json',
+            success: function (resp) {
+                if (resp.code == 400){
+                    alert("学号已存在");
+                    return;
+                }
+                if (resp.code == 200){
+                    window.location.href = "stus";
+                    alert("添加成功");
+                }
+            }
+        })
+    }
+</script>
+</html>

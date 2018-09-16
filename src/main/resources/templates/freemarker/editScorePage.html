@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="utf-8">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>修改成绩</title>
+    <link href="${s.base}/webjars/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <main role="main" class="col-md-6 m-lg-auto col-lg-8 pt-3 px-4">
+            <h2><#if (editScore)??>编辑<#else>新增</#if></h2>
+            <form id="scoreForm" action="/score" method="post">
+                <#if (editScore)??>
+                    <input type="hidden" name="_method" value="put"/>
+                </#if>
+                <div class="form-group">
+                    <label>学号</label><span id="errTip"></span>
+                    <input type="text" name="sno" class="form-control" <#if (editScore)??> value="${editScore.sno}" readonly</#if>>
+                </div>
+                <div class="form-group">
+                    <label>课程名</label>
+                    <input type="text" name="cn" class="form-control" <#if (editScore)??> value="${editScore.cn}" readonly</#if>>
+                </div>
+                <div class="form-group">
+                    <label>分数</label>
+                    <input type="text" name="grade" class="form-control" <#if (editScore)??> value="${editScore.grade}"</#if>>
+                </div>
+                <#if (editScore)??>
+                    <button class="btn btn-md btn-primary" type="submit">修改</button>
+                <#else>
+                    <a href="javascript:void(0)">
+                        <div onclick="doCheckOrAdd();" class="btn btn-md btn-primary">添加</div>
+                    </a>
+                </#if>
+            </form>
+        </main>
+    </div>
+</div>
+</body>
+</html>

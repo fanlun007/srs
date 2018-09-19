@@ -11,13 +11,14 @@
     <div class="row">
         <main role="main" class="col-md-6 m-lg-auto col-lg-8 pt-3 px-4">
             <h2><#if (editScore)??>编辑<#else>新增</#if></h2>
+            <a href="${s.base}/stus">回到学生列表</a>
             <form id="scoreForm" action="/score" method="post">
                 <#if (editScore)??>
                     <input type="hidden" name="_method" value="put"/>
                 </#if>
                 <div class="form-group">
                     <label>学号</label><span id="errTip"></span>
-                    <input type="text" name="sno" class="form-control" <#if (editScore)??> value="${editScore.sno}" readonly</#if>>
+                    <input type="text" name="sno" class="form-control" readonly <#if (editScore)??> value="${editScore.sno}" <#else> value="${snoNum}" </#if>>
                 </div>
                 <div class="form-group">
                     <label>课程名</label>
@@ -31,7 +32,7 @@
                     <button class="btn btn-md btn-primary" type="submit">修改</button>
                 <#else>
                     <a href="javascript:void(0)">
-                        <div onclick="doCheckOrAdd();" class="btn btn-md btn-primary">添加</div>
+                        <div onclick="scoreCheckOrAdd(${snoNum});" class="btn btn-md btn-primary">添加</div>
                     </a>
                 </#if>
             </form>
@@ -39,4 +40,23 @@
     </div>
 </div>
 </body>
+<script type="text/javascript" src="${s.base}/webjars/jquery/3.3.1/jquery.js"></script>
+<script type="text/javascript" src="${s.base}/webjars/jquery-form/3.51/jquery.form.js"></script>
+<script type="text/javascript" src="${s.base}/webjars/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    function scoreCheckOrAdd(snoNum) {
+        $('#scoreForm').ajaxSubmit({
+            dataType: 'json',
+            success: function (result) {
+                if (result.code == 400){
+                    alert("该成绩已经存在");
+                    return;
+                }
+                if (result.code ==200){
+                    window.location.href ="http://localhost:8080/scoreSelf/" + snoNum;
+                }
+            }
+        })
+    }
+</script>
 </html>
